@@ -1,6 +1,6 @@
 import datetime
 from django.db import models
-
+from django.utils.functional import cached_property
 
 class User(models.Model):
     """
@@ -22,7 +22,8 @@ class User(models.Model):
     location = models.CharField(max_length=32)
 
     # @property 可以把方法的返回值转化为一个只读属性
-    @property
+    
+    @cached_property
     def age(self):
         now = datetime.date.today()
         birth_date = datetime.date(
@@ -30,7 +31,8 @@ class User(models.Model):
             self.birth_month,
             self.birth_day)
         return (now - birth_date).days // 365
-
+    
+    # 手动操作 @cached_property 
     @property
     def profile(self):
         if not hasattr(self, ' _profile'):
@@ -60,3 +62,12 @@ class Profile(models.Model):
     virbation = models.BooleanField(default=True)
     friend_only = models.BooleanField(default=False)
     auto_play = models.BooleanField(default=True)
+"""
+from user.models import User, Profile
+a = User.objects.create(
+    nick_name = "yy",
+    phone_number = "18866668888",
+    sex = 'M',
+)
+
+"""

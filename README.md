@@ -18,7 +18,11 @@ pip freeze > requirements
 ```
 django-admin startproject swiper ./  # 新建项目
 ./manage.py startapp user            # 新建user功能
-./manage.py makemigrations           # 
+
+./manage.py makemigrations           # 数据库
+./manage.py migrate     
+
+./manage.py shell                    # 调试
 ```
 # git 
 
