@@ -3,7 +3,10 @@ from django.db import models
 
 
 class User(models.Model):
-    """用户数据模型"""
+    """
+    用户数据模型
+    """
+
     SEX = (
         ('M', '男'),
         ('F', '女')
@@ -28,8 +31,16 @@ class User(models.Model):
             self.birth_day)
         return (now - birth_date).days // 365
 
+    @property
+    def profile(self):
+        # 用户的配置
+        if not hasattr(self, ' _profile'):
+            _profile, is_creat = Profile.objects.get_or_create(id=self.id)
+            self._profile = _profile
+        return self._profile
 
-class Profiles(models.Model):
+
+class Profile(models.Model):
     """
     用户自定义配置
     """
@@ -45,7 +56,7 @@ class Profiles(models.Model):
     max_distance = models.IntegerField(default=10)
     max_data_age = models.IntegerField(default=18)
     min_data_age = models.IntegerField(default=40)
-    sex = models.CharField(max_length=8, choices=SEX)
+    sex = models.CharField(default='M', max_length=8, choices=SEX)
 
     # 定义软件使用设置
     virbation = models.BooleanField(default=True)
