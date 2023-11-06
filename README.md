@@ -12,17 +12,13 @@ conda config --show channels
 python -m pip install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade pip  
 pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple  
 pip install django==1.11.15 redis gunicorn gevent ipython celery  
-pip freeze > requirements  
-
+pip freeze > requirements 
 ```
 # django
 ```
-
 django-admin startproject swiper ./  # 新建项目
 ./manage.py startapp user            # 新建user功能
-
 ./manage.py makemigrations           # 
-
 ```
 # git 
 

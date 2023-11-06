@@ -15,9 +15,9 @@ class User(models.Model):
     nick_name = models.CharField(max_length=32, unique=True)
     phone_number = models.CharField(max_length=16, unique=True)
     sex = models.CharField(max_length=8, choices=SEX)
-    birth_year = models.IntegerField()
-    birth_month = models.IntegerField()
-    birth_day = models.IntegerField()
+    birth_year = models.IntegerField(default=2000)
+    birth_month = models.IntegerField(default=1)
+    birth_day = models.IntegerField(default=1)
     avatar = models.CharField(max_length=256)  # url
     location = models.CharField(max_length=32)
 
@@ -33,10 +33,8 @@ class User(models.Model):
 
     @property
     def profile(self):
-        # 用户的配置
         if not hasattr(self, ' _profile'):
-            _profile, is_creat = Profile.objects.get_or_create(id=self.id)
-            self._profile = _profile
+            self._profile, is_creat = Profile.objects.get_or_create(id=self.id)
         return self._profile
 
 
