@@ -1,8 +1,12 @@
-# from django.shortcuts import render 前后端不分离时 返回视图 
-# 分离时 返回Json
+from user.logic import send_message
+
+
+
+
 def get_vertify_code(request):
     """手机注册"""
     moblie = request.get("moblie")
+    send_message(moblie)
 
 def login(request):
     pass
@@ -18,3 +22,6 @@ def modified(request):
 
 def upload_avator(request):
     pass
+
+def test():
+    send_message('123')

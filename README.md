@@ -32,3 +32,15 @@ git commit -m 'init'
 git push  
 ```
 
+# celery
+```
+异步任务 Async task  & 定时任务 Celery Beat 
+>> 中间件 Broker
+>> 执行单元 Celery worker
+>> 结果储存 Backend
+
+celery -A worker worker
+```
+
+# redis
+```docker run -d -p 6379:6379 -it redis/redis-stack:latest```
