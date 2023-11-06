@@ -1,11 +1,9 @@
 # from django.shortcuts import render 前后端不分离时 返回视图 
 # 分离时 返回Json
-
-
 def get_vertify_code(request):
     """手机注册"""
-    phone_number = request.get("phone_number")
-    
+    moblie = request.get("moblie")
+
 def login(request):
     pass
 
