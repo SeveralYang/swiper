@@ -9,3 +9,6 @@ custom_task_name = Celery('task_name',broker=broker,backend=backend)
 def add(x,y):
     time.sleep(5)
     return x + y 
+
+if __name__ == "__main__":
+    print(add(10,5))

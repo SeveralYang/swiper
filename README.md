@@ -39,8 +39,64 @@ git push
 >> 执行单元 Celery worker
 >> 结果储存 Backend
 
-celery -A worker worker
+
+proj_name/__init__.py
+    /celery.py
+    /tasks.py
+
+celery -A proj_name worker -l INFO
 ```
 
 # redis
-```docker run -d -p 6379:6379 -it redis/redis-stack:latest```
+```
+docker run -d -p 6379:6379 -it redis/redis-stack:latest
+celery -A worker worker -l INFO
+```
+
+# restful
+```
+restful 是一种网络软件设计的风格 仅适用于与http
+URL定位一个网络资源
+
+HTTP
+    POST        新建 提交
+    GET         获取
+    PUT         修改
+    DELETE      删除
+    HEAD        只获取头部信息
+    OPTIONS     查看支持哪些协议 如POST GET
+    PATH        部分修改
+
+状态码
+    2.. 成功
+    3.. 重定向
+    4.. 客户端错误
+    5.. 服务端错误
+
+接口格式
+{
+    "code":200,
+    "data":{
+        
+    }
+}
+
+
+```
+
+# User 
+```
+1
+Description : submit your phone number to login  
+Method : POST  
+Path : /user/verify  
+Return `{'code':0, 'data':null}`
+```
+Params:  
+|field|required|type|description|
+|---|---|---|---|
+phone|true|str |null
+---
+
+```
+```
