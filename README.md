@@ -67,7 +67,7 @@ HTTP
     OPTIONS     查看支持哪些协议 如POST GET
     PATH        部分修改
 
-状态码
+http状态码
     2.. 成功
     3.. 重定向
     4.. 客户端错误
@@ -84,19 +84,16 @@ HTTP
 
 ```
 
-# User 
+# User 所需实现的接口/功能 
 ```
-1
+1 提交手机号
 Description : submit your phone number to login  
 Method : POST  
-Path : /user/verify  
+Path : /user/verify 
+Parameters:
+    Field       Reqeired    Type    Description  
+    moblie      true        str     用户的手机号
 Return `{'code':0, 'data':null}`
-```
-Params:  
-|field|required|type|description|
-|---|---|---|---|
-phone|true|str |null
----
 
-```
+2 
 ```
