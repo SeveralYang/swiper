@@ -4,8 +4,8 @@ from lib.http import render_json
 
 def get_vertify_code(request):
     """手机注册"""
-    moblie = request.get("moblie")
-    send_message(moblie)
+    moblie = request.POST.get("mobile")
+    _ = send_message(moblie)
     return render_json(data=None,code=0)
 
 def login(request):

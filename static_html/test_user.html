@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div style=" background-color: pink;">
+        <ul>
+            <li>
+                <input type="text" id="moblie" value="17512548232">
+            </li>
+            <li>
+                <input type="text" name="code"> 
+                <button name="get_code">get code</button>
+            </li>
+            
+            <li> 
+                <button name="login" > login </button>
+            </li>
+        </ul>
+    </div>
+</body>
+
+<script>
+    document.getElementsByName("get_code")[0].onclick = function(){
+        // 提交请求给后端要求生成验证码
+        var xhr = new XMLHttpRequest()
+        path = 'http://127.0.0.1:8000/user/vertify'
+        xhr.open('post', path, true)
+        var msg = `mobile=${document.getElementById("moblie").value}`
+        console.log(msg)
+        xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded")
+        xhr.send(msg)
+        xhr.onreadystatechange = function () {
+            console.log('readystat', xhr.readyState, " status:", xhr.status)
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                console.log(xhr.responseText)
+            }
+        }
+    }
+    document.getElementsByName("login")[0].onclick = function(){
+        console.log("login")
+    }
+    
+</script>
+<!-- <script src="./jquery-1.12.4.js"></script> -->
+</html>

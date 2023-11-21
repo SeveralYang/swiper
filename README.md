@@ -45,12 +45,12 @@ proj_name/__init__.py
     /tasks.py
 
 celery -A proj_name worker -l INFO
+celery -A worker worker -l INFO
 ```
 
 # redis
 ```
 docker run -d -p 6379:6379 -it redis/redis-stack:latest
-celery -A worker worker -l INFO
 ```
 
 # restful
@@ -84,6 +84,8 @@ http状态码
 
 ```
 
+
+
 # User 所需实现的接口/功能 
 ```
 1 提交手机号
@@ -96,4 +98,10 @@ Parameters:
 Return `{'code':0, 'data':null}`
 
 2 
+```
+# 启动
+```
+docker run -d -p 6379:6379 -it redis/redis-stack:latest
+python manage.py runserver 0.0.0.0:8000
+celery -A worker worker -l INFO -P eventlet
 ```
