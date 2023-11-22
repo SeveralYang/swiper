@@ -10,11 +10,22 @@ def generate_random_verify_code(length=6):
 
 @call_by_worker
 def send_message(phone_number=None, message=None):
+    """异步发送验证码"""
     vcode = generate_random_verify_code()
-    cache.set(key=f"vcode_{phone_number}", value=vcode, timeout=60*3) 
+    key = f"vcode_{phone_number}"
+    cache.set(key=key, value=vcode, timeout=60*3)
+    print('set cache code ',key, cache.get(key)) 
     smscfg = configs.SMS_DATA.copy()
     smscfg['content'] = smscfg['content'] % vcode if message is None else message
     smscfg['mobile'] = phone_number
-    response = requests.post(url=configs.SMS_URL, data=smscfg)
-    print(f'your number is {phone_number}',response)
+    response =None # requests.post(url=configs.SMS_URL, data=smscfg)
+    print(f'your number is {phone_number}, your code is {vcode}')
     return response
+
+@call_by_worker
+def check_vcode(phone_number=None, post_code=None):
+    """检查验证码是否正确"""
+    key = f"vcode_{phone_number}"
+    saved_code = cache.get(key) 
+    print ("cache code ", saved_code)
+    return  saved_code == post_code

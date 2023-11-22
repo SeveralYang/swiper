@@ -1,12 +1,12 @@
 import datetime
 from django.db import models
 from django.utils.functional import cached_property
+from lib.orm import ModelMixin # Minin 用于实现将数据库信息转化为json功能
 
-class User(models.Model):
+class User(models.Model, ModelMixin):
     """
     用户数据模型
     """
-
     SEX = (
         ('M', '男'),
         ('F', '女')
@@ -38,9 +38,21 @@ class User(models.Model):
         if not hasattr(self, ' _profile'):
             self._profile, is_creat = Profile.objects.get_or_create(id=self.id)
         return self._profile
+    
+    # 需要重写to_dict()获取age 否则只能得到 birth_year, birth_month, birth_day
+    def to_dict(self):
+        return {        
+            "id":self.id,
+            "nick_name":self.nick_name,
+            "phone_number":self.phone_number,
+            "sex":self.sex,
+            "age":self.age,
+            "avatar":self.avatar,            
+            "location":self.location,
+        }
 
 
-class Profile(models.Model):
+class Profile(models.Model, ModelMixin):
     """
     用户自定义配置
     """
@@ -56,18 +68,9 @@ class Profile(models.Model):
     max_distance = models.IntegerField(default=10)
     max_data_age = models.IntegerField(default=18)
     min_data_age = models.IntegerField(default=40)
-    sex = models.CharField(default='M', max_length=8, choices=SEX)
+    date_sex = models.CharField(default='M', max_length=8, choices=SEX)
 
     # 定义软件使用设置
     virbation = models.BooleanField(default=True)
     friend_only = models.BooleanField(default=False)
     auto_play = models.BooleanField(default=True)
-"""
-from user.models import User, Profile
-a = User.objects.create(
-    nick_name = "yy",
-    phone_number = "18866668888",
-    sex = 'M',
-)
-
-"""

@@ -19,4 +19,5 @@ from user import api as user_api
 
 urlpatterns = [
     url(r'^user/vertify', user_api.get_vertify_code),
+    url(r'^user/login', user_api.login),
 ]
