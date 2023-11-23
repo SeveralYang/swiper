@@ -22,4 +22,5 @@ urlpatterns = [
     url(r'^api/user/login', user_api.login),
     url(r'^api/user/get_profile', user_api.get_profile),
     url(r'^api/user/modified_profile', user_api.modified),
+    url(r'^api/user/upload_avator', user_api.upload_avator),
 ]

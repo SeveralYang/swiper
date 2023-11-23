@@ -98,8 +98,17 @@ Parameters:
 Return `{'code':0, 'data':null}`
 ```
 # 如何储存静态文件
-1 Ngix 
-2 CDN
+1 Nginx 
+2 CDN 各地建立镜像站
+3 云存储 阿里云 七牛云
+
+# 修改git ignore 
+```
+git rm -r --cached .
+git add .
+git commit -m "update .gitignore"
+git push 
+```
 # 启动
 ```
 docker run -d -p 6379:6379 -it redis/redis-stack:latest

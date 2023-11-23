@@ -1,0 +1,155 @@
+heterogeneous		[ˌhetərəˈdʒiːniəs]		由很多种类组成的
+cumbersome		[ˈkʌmbəsəm]		大而笨重的 不方便的
+simultaneously		[ˌsɪməlˈteɪniəsli]		同时
+verify			[ˈverɪfaɪ]  		验证
+utilize 					使用
+mitigates		[ˈmɪtɪɡeɪts]		To mitigate something means to make it less unpleasant, serious, or painful.
+
+identical with
+
+7.11
+7.22
+
+in this lie the whole difference between
+
+it is often XXly remarked that
+
+
+present it superioty  
+
+
+
+hinders model scalability 
+be mainly attributed to
+delivers relatively low performance at
+vision-based fault diagnosis
+In this section, we sequentially A，B，C
+
+Experimental results on the PASCAL VOC, COCO, and ILSVRC datasets confirm that SSD has competitive accuracy to methods that 
+utilize an additional object proposal step and is much faster,while providing a unified framework for both training and inference. 
+
+
+
+
+this article give advice to phd 
+although the employment situtaion is emergent and job vancancy is rare, the possibilty we land a good is not zero.
+So what kind of altitute we should have to face the intervicw
+
+
+too few queries assigned as positive samples in DETR with one-to-one set matching leads to sparse supervisions on the encoder’s output which considerably hurt the discriminative feature learning of the encoder and vice visa for attention learning in the decoder. 
+
+
+
+缩写网站https://www.acronymify.com/
+
+
+
+
+
+
+
+
+
+
+def get_sine_pos_embed(
+    pos_tensor: torch.Tensor,
+    num_pos_feats: int = 128,
+    temperature: int = 10000,
+    exchange_xy: bool = True,
+) -> torch.Tensor:
+    """generate sine position embedding from a position tensor
+
+    Args:
+        pos_tensor (torch.Tensor): Shape as `(None, n)`.
+        num_pos_feats (int): projected shape for each float in the tensor. Default: 128
+        temperature (int): The temperature used for scaling
+            the position embedding. Default: 10000.
+        exchange_xy (bool, optional): exchange pos x and pos y. \
+            For example, input tensor is `[x, y]`, the results will  # noqa 
+            be `[pos(y), pos(x)]`. Defaults: True.
+
+    Returns:
+        torch.Tensor: Returned position embedding  # noqa 
+        with shape `(None, n * num_pos_feats)`.
+    """
+    scale = 2 * math.pi
+    dim_t = torch.arange(num_pos_feats, dtype=torch.float32, device=pos_tensor.device)
+    dim_t = temperature ** (2 * torch.div(dim_t, 2, rounding_mode="floor") / num_pos_feats)
+
+    def sine_func(x: torch.Tensor):
+        sin_x = x * scale / dim_t
+        sin_x = torch.stack((sin_x[:, :, 0::2].sin(), sin_x[:, :, 1::2].cos()), dim=3).flatten(2)
+        return sin_x
+
+    pos_res = [sine_func(x) for x in pos_tensor.split([1] * pos_tensor.shape[-1], dim=-1)]
+    if exchange_xy:
+        pos_res[0], pos_res[1] = pos_res[1], pos_res[0]
+    pos_res = torch.cat(pos_res, dim=2)
+    return pos_res
+
+
+
+
+
+[06/22 09:00:24] d2.data.build INFO: Distribution of instances among all 8 categories:
+[36m|   category    | #instances   |   category    | #instances   |   category    | #instances   |
+|:-------------:|:-------------|:-------------:|:-------------|:-------------:|:-------------|
+|     crack     | 997          |    finger     | 2390         |  black_core   | 833          |
+|  thick_line   | 759          |  star_crack   | 110          | horizontal_.. | 651          |
+| vertical_di.. | 117          | short_circuit | 378          |               |              |
+|     total     | 6235         |               |              |               |              |
+
+
+
+[36m|   category    | #instances   |   category    | #instances   |   category    | #instances   |
+|:-------------:|:-------------|:-------------:|:-------------|:-------------:|:-------------|
+|     crack     | 263          |    finger     | 568          |  black_core   | 195          |
+|  thick_line   | 222          |  star_crack   | 25           | horizontal_.. | 147          |
+| vertical_di.. | 20           | short_circuit | 114          |               |              |
+|     total     | 1554         |               |              |               |              |
+
+
+
+[06/21 21:44:59] 
+d2.utils.events INFO:  eta: 4:10:26  
+iter: 89999  
+total_loss: 5.01  loss_class: 0.00958  loss_bbox: 0.06262  loss_giou: 0.3009  
+loss_class_0: 0.02091  loss_bbox_0: 0.07692  loss_giou_0: 0.2915  
+loss_class_1: 0.01005  loss_bbox_1: 0.06984  loss_giou_1: 0.288  
+loss_class_2: 0.0103  loss_bbox_2: 0.06232  loss_giou_2: 0.2831  
+loss_class_3: 0.008235  loss_bbox_3: 0.06117  loss_giou_3: 0.287  
+loss_class_4: 0.008787  loss_bbox_4: 0.06244  loss_giou_4: 0.2959  
+loss_class_enc: 0.05699  loss_bbox_enc: 0.119  loss_giou_enc: 0.3734  
+
+loss_class_dn: 0.0003572  loss_bbox_dn: 0.06241  loss_giou_dn: 0.2812  
+loss_class_dn_0: 0.00733  loss_bbox_dn_0: 0.1192  loss_giou_dn_0: 0.381  
+loss_class_dn_1: 0.002521  loss_bbox_dn_1: 0.0773  loss_giou_dn_1: 0.288  
+loss_class_dn_2: 0.001215  loss_bbox_dn_2: 0.06235  loss_giou_dn_2: 0.2757  
+loss_class_dn_3: 0.000676  loss_bbox_dn_3: 0.06057  loss_giou_dn_3: 0.2732  
+loss_class_dn_4: 0.0004434  loss_bbox_dn_4: 0.06242  loss_giou_dn_4: 0.2782  
+
+time: 0.4522  data_time: 0.0022  lr: 0.0001  max_mem: 8851M
+
+set_proxy(){
+	
+	export http_proxy= "http://172.28.224.1:10800"
+	export HTTP_PROXY="http://172.28.224.1:10800"
+	export http_proxy= "http://172.28.224.1:10800"
+	export HTTPS_proxy="http://172.28.224.1:10800"	
+}
+
+unset_proxy(){
+    unset http_proxy
+    unset HTTP_PROXY
+    unset https_proxy
+    unset HTTPS_PROXY
+}
+
+if [ "$1" = "set" ]
+then
+    set_proxy
+
+elif [ "$1" = "unset" ]
+then
+    unset_proxy
+fi

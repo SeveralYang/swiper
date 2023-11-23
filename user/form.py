@@ -51,4 +51,3 @@ class ProfileForm(forms.ModelForm):
             raise forms.ValidationError(' min_distance > max_distance ')
         return min_distance
     
-        

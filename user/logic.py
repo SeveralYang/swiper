@@ -26,3 +26,9 @@ def check_vcode(phone_number=None, post_code=None):
     key = f"vcode_{phone_number}"
     saved_code = cache.get(key) 
     return  saved_code == post_code
+
+def write_file(path,file,mode='wb'):
+    with open(path,mode) as new_file:
+        for trunck in file.chunks():
+            new_file.write(trunck)
+    new_file.close()
