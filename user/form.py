@@ -41,6 +41,7 @@ class ProfileForm(forms.ModelForm):
         min_data_age = cleaned_data.get("min_data_age", -1)
         if min_data_age > max_data_age:
             raise forms.ValidationError(' min_data_age > max_data_age')
+        return min_data_age
     
     def clean_min_data_distance(self):
         cleaned_data = super().clean()
@@ -48,5 +49,6 @@ class ProfileForm(forms.ModelForm):
         min_distance = cleaned_data.get("min_distance", -1)
         if min_distance > max_distance :
             raise forms.ValidationError(' min_distance > max_distance ')
+        return min_distance
     
         
