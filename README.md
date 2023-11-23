@@ -96,9 +96,10 @@ Parameters:
     Field       Reqeired    Type    Description  
     moblie      true        str     用户的手机号
 Return `{'code':0, 'data':null}`
-
-2 
 ```
+# 如何储存静态文件
+1 Ngix 
+2 CDN
 # 启动
 ```
 docker run -d -p 6379:6379 -it redis/redis-stack:latest

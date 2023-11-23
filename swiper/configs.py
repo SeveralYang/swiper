@@ -6,4 +6,6 @@ SMS_DATA = {
     'content': '您的验证码是：%s。请不要把验证码泄露给其他人。',
     'format': "json",
 }
+QINIU_AK = "_v8mp6A_027KKwNOzC1940FKcloAhxXmmCHj4jWZ"
+QINIU_SK = "5hyoZKcOSkeLItxUHZc9z2QtqqL6CEvTcUKDdG6D"
 # 用于存储第三方配置
