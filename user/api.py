@@ -13,14 +13,13 @@ def get_vertify_code(request:HttpRequest):
     return render_json(data=None,code=0)
 
 def login(request:HttpRequest):
-    # 获取手机号
     moblie = request.POST.get("mobile")
     vcode =  request.POST.get("vcode")
     print('from web:', moblie,vcode)
     if check_vcode(moblie,vcode):
         # 获取用户
         user, created = User.objects.get_or_create(phone_number=moblie)
-        # 记录登录状态
+        # 记录登录状态, 登录成功则为request.session添加uid
         request.session['uid'] = user.id
         # 返回用户信息 
         return render_json(data=user.to_dict(),code=0)
@@ -28,15 +27,12 @@ def login(request:HttpRequest):
         # 返回出错
         return render_json(data=None,code=err.VCODE_ERROR)
     
-
-
 def get_profile(request):
-    pass
-
+    user = request.user
+    return render_json(data=user.profile.to_dict(),code=0)
 
 def modified(request):
     pass
-
 
 def upload_avator(request):
     pass
