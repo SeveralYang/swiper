@@ -159,4 +159,5 @@ cython_debug/
 #.idea/
 
 swiper/configs.py
+medias/
 media/
