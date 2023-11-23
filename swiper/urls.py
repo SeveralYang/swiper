@@ -18,7 +18,8 @@ from django.conf.urls import url
 from user import api as user_api
 
 urlpatterns = [
-    url(r'^api/user/vertify', user_api.get_vertify_code),
+    url(r'^api/user/get_vertify', user_api.get_vertify_code),
     url(r'^api/user/login', user_api.login),
     url(r'^api/user/get_profile', user_api.get_profile),
+    url(r'^api/user/modified_profile', user_api.modified),
 ]

@@ -30,8 +30,8 @@ class AuthMiddleware(MiddlewareMixin):
 
     def process_request(self,request):
         #  白名单跳过检查
-        for path in  self.WHITE_LIST:
-            if request.path.startwith(path):
+        for path in self.WHITE_LIST:
+            if request.path.startswith(path):
                 return 
         # 是否登录检查
         uid = request.session.get('uid')

@@ -1,5 +1,4 @@
 from random import randrange
-import requests
 from django.core.cache import cache
 
 from swiper import configs
@@ -14,7 +13,6 @@ def send_message(phone_number=None, message=None):
     vcode = generate_random_verify_code()
     key = f"vcode_{phone_number}"
     cache.set(key=key, value=vcode, timeout=60*3)
-    print('set cache code ',key, cache.get(key)) 
     smscfg = configs.SMS_DATA.copy()
     smscfg['content'] = smscfg['content'] % vcode if message is None else message
     smscfg['mobile'] = phone_number
@@ -27,5 +25,4 @@ def check_vcode(phone_number=None, post_code=None):
     """检查验证码是否正确"""
     key = f"vcode_{phone_number}"
     saved_code = cache.get(key) 
-    print ("cache code ", saved_code)
     return  saved_code == post_code
