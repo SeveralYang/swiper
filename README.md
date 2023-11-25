@@ -109,9 +109,41 @@ git add .
 git commit -m "update .gitignore"
 git push 
 ```
+
+# 实例方法 静态方法 类方法
+```
+class A:
+
+    def __init__(self) -> None:
+        self.x = 1
+        self.y = 2
+
+    def f1 (self):
+        print(self.x + self.y)
+        return self
+    
+    @classmethod
+    def f2(cls):
+        print(cls.x + cls.y)
+        return cls
+    
+    @staticmethod
+    def f3(self):
+        print(self.x + self.y)
+        return self
+
+
+if __name__ == "__main__":
+    a = A()
+
+    a == a.foo1()  # True
+    
+```
+
 # 启动
 ```
 docker run -d -p 6379:6379 -it redis/redis-stack:latest
 python manage.py runserver 0.0.0.0:8000
 celery -A worker worker -l INFO -P eventlet
 ```
+

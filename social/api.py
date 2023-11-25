@@ -3,8 +3,8 @@ from django.http import HttpRequest
 
 from common import err
 from lib.http import render_json
-from social.logic import get_rcmd_users
-
+from social.logic import get_rcmd_users, like_operate, crazy_operate, dislike_operate, rewind_operate
+from social.models import Friend
 
 
 # Create your views here.
@@ -18,15 +18,36 @@ def users(request:HttpRequest):
     res = [user.to_dict() for user in users]
     return render_json(data=res,code=0)
 
-def crazy(request:HttpRequest):
-    pass
 
 def like(request:HttpRequest):
-    pass
+    """喜欢"""
+    # 更新数据集 记录
+    sid = int(request.POST.get('sid'))
+    is_match= like_operate(request.user.id,sid)
+    return render_json(data={"is_match":is_match},code=0)
+
+
+def crazy(request:HttpRequest):
+    """超级喜欢"""
+    sid = int(request.POST.get('sid'))
+    is_match= crazy_operate(request.user.id,sid)
+    return render_json(data={"is_match":is_match},code=0)
 
 def dislike(request:HttpRequest):
-    pass
+    """不喜欢"""
+    sid = int(request.POST.get('sid'))
+    dislike_operate(request.user.id,sid)
+    return render_json(None,0)
+
 
 def rewind(request:HttpRequest):
-    pass
+    """反悔 = 删除所有关系 包括好友关系"""
+    sid = int(request.POST.get('sid'))
+    rewind_operate(request.user.id,sid)
+    return render_json(None, 0)
 
+def list_friends(request:HttpRequest):
+    """反悔 = 删除所有关系 包括好友关系"""
+    friends = Friend.list_friends(request.user.id)
+    friends_info = [frd.to_dict() for frd in friends]
+    return render_json(friends_info, 0)
