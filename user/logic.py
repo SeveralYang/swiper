@@ -1,8 +1,13 @@
+import os
+from urllib.parse import urljoin
+
 from random import randrange
 from django.core.cache import cache
+from django.conf import settings
 
 from swiper import configs
 from worker import call_by_worker
+from lib.qiniu_cloud import async_upload_to_QINIU
 
 def generate_random_verify_code(length=6):
     return randrange(10**(length-1), 10**length)
@@ -27,8 +32,14 @@ def check_vcode(phone_number=None, post_code=None):
     saved_code = cache.get(key) 
     return  saved_code == post_code
 
-def write_file(path,file,mode='wb'):
+def write_file(file,user,index=0,mode='wb'):
+    filename = f"Avatar-{user.id}-{index}{os.path.splitext(str(file))[-1]}"
+    path = os.path.join(settings.BASE_DIR, settings.MEDIA_ROOT, filename)
     with open(path,mode) as new_file:
         for trunck in file.chunks():
             new_file.write(trunck)
     new_file.close()
+    async_upload_to_QINIU(path,filename)
+    user.avatar = urljoin(configs.QINIU_URL, filename)
+    user.save()
+    return user.avatar

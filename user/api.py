@@ -1,8 +1,6 @@
-import os
-
 from django.core.cache import cache
 from django.http import HttpRequest
-from django.conf import settings
+
 
 from user.models import User
 from user.logic import send_message, check_vcode,write_file
@@ -60,12 +58,13 @@ def modified(request:HttpRequest):
         return render_json(data=form.errors,code = err.PROFILE_DATA_ERROR)
 
 def upload_avator(request:HttpRequest):
-    # 上传本地图片到服务器
-    index = 0
-    for name, file in request.FILES.items():
-        filename = f"Avatar-{request.user.id}-{index}{os.path.splitext(str(file))[-1]}"
-        path = os.path.join(settings.BASE_DIR, settings.MEDIA_ROOT, filename)
-        write_file(path,file)
-        
-        index += 1
-    return render_json(data={"msg":"upload"},code=0)
+   
+    uid = request.user
+    # 获取上传图片
+    file =  request.FILES.get('avatar')
+    if file : # and  check_image()
+        # 保存图片到本地; 上传图片到七牛服务器; 并返回url地址
+        url = write_file(file,uid)
+        return render_json(data={"msg":f"{url}"},code=0)
+    else:
+        return render_json(data=None,code=err.AVATAR_UPLOAD_ERROR)

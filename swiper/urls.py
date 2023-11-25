@@ -16,11 +16,18 @@ Including another URLconf
 from django.conf.urls import url
 # from django.contrib import admin
 from user import api as user_api
-
+from social import api as social_api
 urlpatterns = [
     url(r'^api/user/get_vertify', user_api.get_vertify_code),
     url(r'^api/user/login', user_api.login),
     url(r'^api/user/get_profile', user_api.get_profile),
     url(r'^api/user/modified_profile', user_api.modified),
     url(r'^api/user/upload_avator', user_api.upload_avator),
+
+    url(r'^api/social/users',social_api.users ),
+    url(r'^api/social/crazy',social_api.crazy ),
+    url(r'^api/social/like',social_api.like ),
+    url(r'^api/social/dislike',social_api.dislike ),
+    url(r'^api/social/rewind',social_api.rewind ),
+
 ]

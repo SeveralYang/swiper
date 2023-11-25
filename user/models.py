@@ -33,12 +33,31 @@ class User(models.Model, ModelMixin):
         return (now - birth_date).days // 365
     
     # 手动操作 @cached_property 
+    
+    # @property
+    # def profile(self):
+    #     if not hasattr(self, ' _profile'):
+    #         self._profile, is_creat = Profile.objects.get_or_create(id=self.id)
+    #     return self._profile
+    
     @property
     def profile(self):
         if not hasattr(self, ' _profile'):
-            self._profile, is_creat = Profile.objects.get_or_create(id=self.id)
+            try :
+                self._profile= Profile.objects.get(
+                    id=self.id
+                )
+            except:
+                self._profile = Profile.objects.create(
+                    id=self.id,
+                    location = self.location ,
+                    max_data_age = self.age + 5,
+                    min_data_age = max(18,self.age -5),
+                    date_sex = "M" if self.sex == 'F' else 'F'
+                )
         return self._profile
     
+
     # 需要重写to_dict()获取age 否则只能得到 birth_year, birth_month, birth_day
     def to_dict(self):
         return {        

@@ -24,8 +24,8 @@ class AuthMiddleware(MiddlewareMixin):
         功能:如果用户已经登录则通过,否则需要用户登录
     """
     WHITE_LIST = [
-        r'api/user/vertify',
-        r'^api/user/login'
+        r'/api/user/get_vertify',
+        r'/api/user/login'
     ]
 
     def process_request(self,request):
@@ -41,4 +41,4 @@ class AuthMiddleware(MiddlewareMixin):
                 return 
             except:
                 request.session.flush() 
-        return render_json(data=None,code=err.LOGIN_ERR)
+        return render_json(data=str(request.path),code=err.LOGIN_ERR)
