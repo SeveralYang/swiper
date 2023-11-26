@@ -1,7 +1,9 @@
 import datetime
 from django.db import models
 from django.utils.functional import cached_property
+
 from lib.orm import ModelMixin # Minin 用于实现将数据库信息转化为json功能
+from vip.models import Vip
 
 class User(models.Model, ModelMixin):
     """
@@ -20,6 +22,8 @@ class User(models.Model, ModelMixin):
     birth_day = models.IntegerField(default=1)
     avatar = models.CharField(max_length=256)  # url
     location = models.CharField(max_length=32)
+    
+    vip_id  = models.IntegerField(default=1) # 该用户所属的VIP类别
 
     # @property 可以把方法的返回值转化为一个只读属性
     
@@ -40,6 +44,13 @@ class User(models.Model, ModelMixin):
     #         self._profile, is_creat = Profile.objects.get_or_create(id=self.id)
     #     return self._profile
     
+    @property
+    def vip(self):
+        if not hasattr(self, ' _vip'):
+            self._vip = Vip.objects.get(id=self.vip_id)
+        return self._vip
+
+
     @property
     def profile(self):
         if not hasattr(self, ' _profile'):
@@ -68,6 +79,7 @@ class User(models.Model, ModelMixin):
             "age":self.age,
             "avatar":self.avatar,            
             "location":self.location,
+            'vip':self.vip_id
         }
 
 

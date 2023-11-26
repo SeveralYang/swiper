@@ -4,6 +4,7 @@ import random
 
 import django
 
+
 BASE_DIR = os.path.dirname( # swiper
     os.path.dirname( # swiper\scripts
         os.path.abspath(__file__) # swiper\scripts\init_test_user.py
@@ -17,6 +18,9 @@ django.setup()
 
 
 from user.models import User
+from vip.models import  *
+
+
 
 last_names = (
 "赵", "钱", "孙", "李", "周", "吴", "郑", "王",
@@ -56,18 +60,76 @@ def random_name():
     name = f"{random.choice(last_names)}{random.choice(first_names[sex])}"
     return 'M' if sex == 'male' else "F", name
 
-for i in range(5000):
-    sex, name = random_name()
-    try:
-        User.objects.create(
-        nick_name = name,
-        phone_number =str(random.randrange(21000000000,21900000000)),
-        sex = sex,
-        birth_year = random.randint(1990,2005),
-        birth_month = random.randint(1,12),
-        birth_day = random.randint(1,28),
-        location = random.choice(LOCATIONS)
+def create_robots(n):
+    for i in range(n):
+        sex, name = random_name()
+        try:
+            User.objects.create(
+            nick_name = name,
+            phone_number =str(random.randrange(21000000000,21900000000)),
+            sex = sex,
+            birth_year = random.randint(1990,2005),
+            birth_month = random.randint(1,12),
+            birth_day = random.randint(1,28),
+            location = random.choice(LOCATIONS)
+            )
+            print(f"created User {name}")
+        except:
+            pass
+
+def init_permissions():
+    """
+    初始化所有权限表 设定所有应有的权限种类
+    """
+    permissions = [
+    "vip_flag",                     # 会员标识
+    "crazy_permission",             # crazy权限
+    "rewind_permission",            # rewind权限
+    "any_location",                 # 更改定位
+    "unlimited_like",               # 无限喜欢次数
+    ]
+    for p_name in permissions:
+        Permission.objects.get_or_create(name=p_name)
+
+def init_vip():
+    """初始化vip信息表 规定 Vip相关信息 如名称 等级 价格"""
+    for i in range(4):
+        Vip.objects.get_or_create(
+            name = f"会员{i}", 
+            level = i,
+            price = i * 5,
         )
-        print(f"created User {name}")
-    except:
-        pass
+
+def init_vip_permission():
+    """
+    初始化VIP和权限关系表 即规定各个等级的VIP分别具有哪些权限
+    """
+    vip1 = Vip.objects.get(level=1)
+    vip2 = Vip.objects.get(level=2)
+    vip3 = Vip.objects.get(level=3)
+
+    vip_flag = Permission.objects.get(name = "vip_flag") 
+    crazy_permission = Permission.objects.get(name = "crazy_permission") 
+    rewind_permission = Permission.objects.get(name = "rewind_permission") 
+    any_location = Permission.objects.get(name = "any_location") 
+    unlimited_like = Permission.objects.get(name = "unlimited_like") 
+
+    # vip1 权限
+    VipPermission.objects.get_or_create(vip_id = vip1.id,permission_id = vip_flag.id)
+    VipPermission.objects.get_or_create(vip_id = vip1.id,permission_id = crazy_permission.id)
+    # vip2 权限
+    VipPermission.objects.get_or_create(vip_id = vip2.id,permission_id = vip_flag.id)
+    VipPermission.objects.get_or_create(vip_id = vip2.id,permission_id = crazy_permission.id)
+    VipPermission.objects.get_or_create(vip_id = vip2.id,permission_id = rewind_permission.id)
+    # vip3 权限
+    VipPermission.objects.get_or_create(vip_id = vip3.id,permission_id = vip_flag.id)
+    VipPermission.objects.get_or_create(vip_id = vip3.id,permission_id = crazy_permission.id)
+    VipPermission.objects.get_or_create(vip_id = vip3.id,permission_id = rewind_permission.id)
+    VipPermission.objects.get_or_create(vip_id = vip3.id,permission_id = any_location.id)
+    VipPermission.objects.get_or_create(vip_id = vip3.id,permission_id = unlimited_like.id)
+
+if __name__ == "__main__":
+    create_robots(2000)
+    init_permissions()
+    init_vip()
+    init_vip_permission()

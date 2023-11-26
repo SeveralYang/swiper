@@ -1,10 +1,9 @@
-from django.core.cache import cache
 from django.http import HttpRequest
 
-from common import err
 from lib.http import render_json
 from social.logic import get_rcmd_users, like_operate, crazy_operate, dislike_operate, rewind_operate
 from social.models import Friend
+from vip.logic import permission_required
 
 
 # Create your views here.
@@ -26,7 +25,7 @@ def like(request:HttpRequest):
     is_match= like_operate(request.user.id,sid)
     return render_json(data={"is_match":is_match},code=0)
 
-
+@permission_required("crazy_permission")
 def crazy(request:HttpRequest):
     """超级喜欢"""
     sid = int(request.POST.get('sid'))
@@ -39,7 +38,7 @@ def dislike(request:HttpRequest):
     dislike_operate(request.user.id,sid)
     return render_json(None,0)
 
-
+@permission_required("rewind_permission")
 def rewind(request:HttpRequest):
     """反悔 = 删除所有关系 包括好友关系"""
     sid = int(request.POST.get('sid'))
@@ -51,3 +50,4 @@ def list_friends(request:HttpRequest):
     friends = Friend.list_friends(request.user.id)
     friends_info = [frd.to_dict() for frd in friends]
     return render_json(friends_info, 0)
+
