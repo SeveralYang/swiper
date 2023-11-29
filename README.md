@@ -139,9 +139,17 @@ if __name__ == "__main__":
     a == a.foo1()  # True
     
 ```
-# 权限模型
+# 缓存管理
+memcached 只支持字符串
+    set:保存一个数据
+    get:获取一个数据
+    incr:
+    decr:
+    watch:
+    只是用内存, 性能好, 但是无法数据持久化
 
-
+reids
+    
 
 # 启动
 ```

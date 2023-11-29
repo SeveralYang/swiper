@@ -1,3 +1,5 @@
+import logging
+
 from django.http import HttpRequest
 
 from lib.http import render_json
@@ -6,7 +8,7 @@ from social.models import Friend
 from vip.logic import permission_required
 
 
-# Create your views here.
+log = logging.getLogger('inf')
 
 def users(request:HttpRequest):
     # 获取推荐用户
@@ -15,6 +17,8 @@ def users(request:HttpRequest):
     end_num = start_num + 5
     users = get_rcmd_users(request.user)[start_num:end_num]
     res = [user.to_dict() for user in users]
+    print(log.handlers)
+    log.fatal(f"{request.user.id} request for other users from log inf")
     return render_json(data=res,code=0)
 
 

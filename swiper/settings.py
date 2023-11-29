@@ -126,3 +126,84 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 MEDIA_ROOT = 'medias'
+
+
+# 日志配置
+BASE_LOG_DIR = os.path.join(BASE_DIR, "logs")
+
+LOGGING = {
+    'version':1,
+    
+    'disable_existing_loggers': False,
+
+    'formatters':{
+        'simple':{
+            "format" : '%(asctime)s  %(levelname)s : %(funcName)s  %(message)s' ,
+            "datefmt" : "%Y-%m-%d %H:%M:%S"
+        },
+        'verbose':{
+            "format" : ('%(asctime)s  %(levelname)s [%(process)d-%(threadName)s] ' 
+                        '%(module)s.%(funcName)s line %(lineno)d  %(message)s') ,
+            "datefmt" : "%Y-%m-%d %H:%M:%S"
+        }
+    },
+
+    'handlers':{
+        'console':{
+            'class':'logging.StreamHandler',
+            'level':'DEBUG' if DEBUG else 'WARNING'
+        },
+        'info':{
+            'class':'logging.handlers.TimedRotatingFileHandler',
+            'filename': os.path.join(BASE_LOG_DIR, "info.log"),
+            'when':'D',
+            'backupCount': 30,
+            'formatter':'simple',
+            'level':"INFO"
+        },
+        'error':{
+            'class':'logging.handlers.TimedRotatingFileHandler',
+            'filename':os.path.join(BASE_LOG_DIR,"error.log"),
+            'when':'W0', # 每周一新建一个log文件
+            'backupCount': 4, # 日志保留四周
+            'formatter':'verbose',
+            'level':"WARNING"
+        }
+    },
+
+    'loggers':{
+        'django':{
+            'handlers':['console'],
+        },
+        
+        'inf':{
+            'handlers':['info'],
+            'propagate':True,  # 是否向上一级logger实例传递日志信息
+            'level':'INFO'
+        },
+        'err':{
+            'handlers':['error'],
+            'propagate':True,
+            'level':'WARNING'
+        }
+    },
+
+}
+
+# 默认 django.core.cache  配置
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
+#     }
+# }
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "PICKLE_VERSION": -1
+        }
+    }
+}
